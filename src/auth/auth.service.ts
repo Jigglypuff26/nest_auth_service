@@ -1,29 +1,43 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/user.entity';
+import { SignInDto } from './dto/signin.dto';
+import { UserService } from 'src/users/users.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.validateUser(email, password);
+  async signUp(createUserDto: CreateUserDto) {
+    try {
+      const user = await this.userService.create(createUserDto);
+      return this.generateToken(user);
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      throw new ConflictException('Failed to create user');
+    }
+  }
+
+  async signIn(signInDto: SignInDto) {
+    const user = await this.userService.validateUser(signInDto.email, signInDto.password);
+    
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    return user;
+
+    return this.generateToken(user);
   }
 
-  async login(user: User) {
+  private generateToken(user: any) {
     const payload = { 
       email: user.email, 
       sub: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName
+      name: user.name 
     };
     
     return {
@@ -31,14 +45,13 @@ export class AuthService {
       user: {
         id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
+        isActive: user.isActive,
       },
     };
   }
 
-  async register(userData: Partial<User>) {
-    const user = await this.usersService.create(userData);
-    return this.login(user);
+  async validateUser(payload: any) {
+    return await this.userService.findOneById(payload.sub);
   }
 }

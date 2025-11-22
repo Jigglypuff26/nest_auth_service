@@ -1,58 +1,100 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { UpdateUserDto } from 'src/auth/dto/update-user.dto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(userData: Partial<User>): Promise<User> {
-    const existingUser = await this.findByEmail(userData.email);
+  async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email }
+    });
+
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
 
-    const hashedPassword = await bcrypt.hash(userData.password, 12);
-    const user = this.usersRepository.create({
-      ...userData,
-      password: hashedPassword,
-    });
+    try {
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
+      
+      const user = this.userRepository.create({
+        ...createUserDto,
+        password: hashedPassword,
+      });
 
-    return this.usersRepository.save(user);
-  }
-
-  async findByEmail(email: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { email } });
-  }
-
-  async findById(id: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { id } });
-  }
-
-  async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.findByEmail(email);
-    if (user && await bcrypt.compare(password, user.password)) {
-      return user;
+      const savedUser = await this.userRepository.save(user);
+      const { password, ...result } = savedUser;
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to create user');
     }
-    return null;
   }
 
-  async updateUser(id: string, updateData: Partial<User>): Promise<User> {
-    const user = await this.findById(id);
+  async findAll(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.userRepository.find();
+    return users.map(user => {
+      const { password, ...result } = user;
+      return result;
+    });
+  }
+
+  async findOneById(id: number): Promise<Omit<User, 'password'> | null> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) return null;
+    
+    const { password, ...result } = user;
+    return result;
+  }
+
+  async findOneByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ 
+      where: { email },
+      select: ['id', 'email', 'password', 'name', 'isActive']
+    });
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<Omit<User, 'password'>> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (updateData.password) {
-      updateData.password = await bcrypt.hash(updateData.password, 12);
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 12);
     }
 
-    await this.usersRepository.update(id, updateData);
-    return this.findById(id);
+    await this.userRepository.update(id, updateUserDto);
+    
+    const updatedUser = await this.userRepository.findOne({ where: { id } });
+    const { password, ...result } = updatedUser;
+    return result;
+  }
+
+  async remove(id: number): Promise<void> {
+    const result = await this.userRepository.delete(id);
+    
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
+  async validateUser(email: string, password: string): Promise<Omit<User, 'password'> | null> {
+    const user = await this.findOneByEmail(email);
+    
+    if (user && await bcrypt.compare(password, user.password)) {
+      const { password: _, ...result } = user;
+      return result;
+    }
+    
+    return null;
   }
 }

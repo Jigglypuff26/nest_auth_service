@@ -1,12 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn,  } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ unique: true })
+  @Index()
   email: string;
 
   @Column()
@@ -14,10 +15,7 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  firstName: string;
-
-  @Column({ nullable: true })
-  lastName: string;
+  name: string;
 
   @Column({ default: true })
   isActive: boolean;
