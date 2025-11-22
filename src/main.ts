@@ -4,8 +4,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Global validation
+  
+  // Глобальная валидация
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -13,14 +13,15 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
-  // Global serialization
+  
+  // Глобальная сериализация
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-
-  // Enable CORS
+  
+  // Включаем CORS
   app.enableCors();
-
-  await app.listen(process.env.PORT || 3000);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
 }
 bootstrap();

@@ -1,10 +1,10 @@
 {
   "name": "nest_auth_service",
   "version": "0.0.1",
-  "description": "",
+  "description": "NestJS Authentication Service with PostgreSQL",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/typeorm": "^10.0.0",
+    "@nestjs/mapped-types": "^2.0.3",
     "typeorm": "^0.3.17",
     "pg": "^8.11.3",
     "class-validator": "^0.14.0",
