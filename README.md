@@ -1,98 +1,235 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Authentication Service 🔐
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Простой и эффективный сервис аутентификации на основе NestJS с PostgreSQL. Предоставляет REST API для регистрации, входа и управления пользователями с JWT токенами.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Особенности
 
-## Description
+- **JWT аутентификация** - безопасные access tokens
+- **PostgreSQL** - надежное хранение данных
+- **TypeORM** - работа с базой данных
+- **Валидация** - встроенная валидация DTO
+- **Безопасность** - хеширование паролей с bcrypt
+- **TypeScript** - полная типизация
+- **Готовые модули** - пользователи и аутентификация
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📦 Установка и запуск
 
-## Project setup
+### Предварительные требования
+
+- Node.js 16+
+- PostgreSQL 12+
+- npm или yarn
+
+### 1. Клонирование репозитория
 
 ```bash
-$ npm install
-```
+git clone https://github.com/Jigglypuff26/nest_auth_service.git
+cd nest_auth_service
 
-## Compile and run the project
+2. Установка зависимостей
+bash
 
-```bash
-# development
-$ npm run start
+npm install
 
-# watch mode
-$ npm run start:dev
+3. Настройка базы данных
 
-# production mode
-$ npm run start:prod
-```
+Создайте базу данных в PostgreSQL:
+sql
 
-## Run tests
+CREATE DATABASE nest_auth;
 
-```bash
-# unit tests
-$ npm run test
+4. Настройка переменных окружения
 
-# e2e tests
-$ npm run test:e2e
+Создайте файл .env в корне проекта:
+env
 
-# test coverage
-$ npm run test:cov
-```
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=nest_auth
 
-## Deployment
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
+JWT_EXPIRES_IN=1d
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# Application
+NODE_ENV=development
+PORT=3000
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+5. Запуск приложения
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Разработка:
+bash
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+npm run start:dev
 
-## Resources
+Продакшен:
+bash
 
-Check out a few resources that may come in handy when working with NestJS:
+npm run build
+npm run start:prod
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Приложение будет доступно по адресу: http://localhost:3000
+📚 API Endpoints
+Аутентификация
+Регистрация пользователя
+http
 
-## Support
+POST /auth/signup
+Content-Type: application/json
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "John Doe"
+}
 
-## Stay in touch
+Вход пользователя
+http
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+POST /auth/signin
+Content-Type: application/json
 
-## License
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Получение профиля
+http
+
+GET /auth/profile
+Authorization: Bearer <your_jwt_token>
+
+Управление пользователями (требуют JWT)
+Получить всех пользователей
+http
+
+GET /users
+Authorization: Bearer <your_jwt_token>
+
+Получить пользователя по ID
+http
+
+GET /users/1
+Authorization: Bearer <your_jwt_token>
+
+Создать пользователя
+http
+
+POST /users
+Authorization: Bearer <your_jwt_token>
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "newpassword123",
+  "name": "New User"
+}
+
+Обновить пользователя
+http
+
+PATCH /users/1
+Authorization: Bearer <your_jwt_token>
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "isActive": false
+}
+
+Удалить пользователя
+http
+
+DELETE /users/1
+Authorization: Bearer <your_jwt_token>
+
+🛠 Технологии
+
+    NestJS - фреймворк для Node.js
+
+    PostgreSQL - реляционная база данных
+
+    TypeORM - ORM для TypeScript
+
+    JWT - JSON Web Tokens
+
+    bcryptjs - хеширование паролей
+
+    class-validator - валидация DTO
+
+    Passport - аутентификация
+
+📁 Структура проекта
+text
+
+src/
+├── app.module.ts          # Корневой модуль
+├── main.ts               # Точка входа
+├── auth/                 # Модуль аутентификации
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   ├── auth.module.ts
+│   ├── dto/
+│   │   └── signin.dto.ts
+│   ├── guards/
+│   │   └── jwt-auth.guard.ts
+│   └── strategies/
+│       └── jwt.strategy.ts
+└── user/                 # Модуль пользователей
+    ├── user.controller.ts
+    ├── user.service.ts
+    ├── user.entity.ts
+    ├── user.module.ts
+    └── dto/
+        ├── create-user.dto.ts
+        └── update-user.dto.ts
+
+🔧 Команды разработки
+bash
+
+# Запуск в режиме разработки
+npm run start:dev
+
+# Сборка проекта
+npm run build
+
+# Запуск тестов
+npm run test
+
+# Линтинг кода
+npm run lint
+
+# Форматирование кода
+npm run format
+
+🧪 Примеры использования
+Регистрация и аутентификация
+bash
+
+# 1. Регистрация
+curl -X POST http://localhost:3000/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"test123","name":"Test User"}'
+
+# 2. Вход
+curl -X POST http://localhost:3000/auth/signin \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"test123"}'
+
+# 3. Использование токена для доступа к защищенным endpoint'ам
+curl -X GET http://localhost:3000/auth/profile \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+🔒 Безопасность
+
+    Пароли хешируются с помощью bcrypt
+
+    JWT токены с сроком действия
+
+    Валидация всех входящих данных
+
+    Защита от SQL-инъекций через TypeORM
