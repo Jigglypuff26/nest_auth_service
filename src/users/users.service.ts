@@ -75,6 +75,11 @@ export class UserService {
     await this.userRepository.update(id, updateUserDto);
     
     const updatedUser = await this.userRepository.findOne({ where: { id } });
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+
     const { password, ...result } = updatedUser;
     return result;
   }
