@@ -1,1 +1,4 @@
-npx husky add .husky/pre-push "npm run format:check"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run format:check
