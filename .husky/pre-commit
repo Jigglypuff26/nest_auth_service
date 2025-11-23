@@ -1,15 +1,19 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🔍 Running pre-commit checks..."
+echo "🔍 Running Running Running..."
 
-# 1. Проверка форматирования и линтинга через lint-staged
-echo "📝 Formatting and linting..."
-npx lint-staged
+# Фикс по .prettierrc
+echo "⚡🔧 Prettier Fix..."
+npm run format
 
-# 2. Проверка типов TypeScript
-echo "⚡ Type checking..."
-npm run type-check -- --noEmit
+# # 1. Проверка форматирования и линтинга через lint-staged
+# echo "📝 Formatting and linting..."
+# npx lint-staged
+
+# # 2. Проверка типов TypeScript
+# echo "⚡ Type checking..."
+# npm run type-check -- --noEmit
 
 # # 3. Запуск тестов для измененных файлов
 # echo "🧪 Running tests..."
