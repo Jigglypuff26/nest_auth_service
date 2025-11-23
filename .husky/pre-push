@@ -1,4 +1,22 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run format:check
+echo "🚀 Running pre-push checks..."
+
+# 1. Проверка типов TypeScript
+echo "🔍 Type checking..."
+npm run type-check
+
+# 2. Линтинг всего проекта
+echo "📝 Linting..."
+npm run lint:check
+
+# # 3. Запуск всех тестов
+# echo "🧪 Running tests..."
+# npm test
+
+# # 4. Проверка сборки
+# echo "🏗️ Building project..."
+# npm run build
+
+echo "✅ All pre-push checks passed! Ready to push."
