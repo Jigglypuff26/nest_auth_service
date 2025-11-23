@@ -15,7 +15,7 @@ import { UpdateUserDto } from 'src/auth/dto/update-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
@@ -45,7 +45,7 @@ export class UserService {
 
   async findAll(): Promise<Omit<User, 'password'>[]> {
     const users = await this.userRepository.find();
-    return users.map(user => {
+    return users.map((user) => {
       const { password, ...result } = user;
       return result;
     });

@@ -8,7 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
