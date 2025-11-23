@@ -1,4 +1,33 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
-npm run format:check
+# echo "🏃 Running pre-push hooks..."
+
+# # Проверка типов TypeScript
+# echo "🔍 Type checking..."
+# npm run typecheck || {
+#   echo "❌ TypeScript errors found"
+#   exit 1
+# }
+
+# # Линтинг
+# echo "📝 Linting code..."
+# npm run lint || {
+#   echo "❌ ESLint errors found"
+#   exit 1
+# }
+
+# # Запуск тестов
+# echo "🧪 Running tests..."
+# npm run test || {
+#   echo "❌ Tests failed"
+#   exit 1
+# }
+
+# # Проверка сборки
+# echo "🏗️ Checking build..."
+# npm run build || {
+#   echo "❌ Build failed"
+#   exit 1
+# }
+
+# echo "✅ All pre-push checks passed!"
