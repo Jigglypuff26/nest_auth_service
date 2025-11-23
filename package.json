@@ -20,7 +20,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "type-check": "tsc --noEmit",
+    "test:staged": "jest --passWithNoTests --findRelatedTests --bail",
+    "build:check": "nest build --noEmit"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -40,7 +43,8 @@
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "typescript-eslint": "^8.47.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -88,12 +92,15 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
-    "**/*.{ts,js,json,md,yml,yaml,css,scss,html}": [
+    "**/*.ts": [
+      "eslint --fix --max-warnings=0",
       "prettier --write"
     ],
-    "**/*.ts": [
-      "eslint --fix",
+    "**/*.{json,md,yml,yaml}": [
       "prettier --write"
+    ],
+    "src/**/*.ts": [
+      "npm run test:staged"
     ]
   }
 }
