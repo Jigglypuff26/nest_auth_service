@@ -4,18 +4,18 @@ import { Controller, Get } from '@nestjs/common';
 export class TestController {
   @Get()
   test() {
-    return { 
+    return {
       message: 'API is working!',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 
   @Get('health')
   health() {
-    return { 
+    return {
       status: 'OK',
       service: 'NestJS Auth Service',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 }

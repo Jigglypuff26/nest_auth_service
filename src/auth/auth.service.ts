@@ -8,7 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
@@ -25,7 +25,7 @@ export class AuthService {
 
   async signIn(signInDto: SignInDto) {
     const user = await this.userService.validateUser(signInDto.email, signInDto.password);
-    
+
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -34,12 +34,12 @@ export class AuthService {
   }
 
   private generateToken(user: any) {
-    const payload = { 
-      email: user.email, 
+    const payload = {
+      email: user.email,
       sub: user.id,
-      name: user.name 
+      name: user.name,
     };
-    
+
     return {
       access_token: this.jwtService.sign(payload),
       user: {
