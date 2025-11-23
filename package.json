@@ -2,7 +2,7 @@
   "name": "nest_auth_service",
   "version": "0.0.1",
   "description": "NestJS Authentication Service with PostgreSQL",
-  "author": "",
+  "author": "Maksim Vekovshinin",
   "private": true,
   "license": "MIT",
   "scripts": {
