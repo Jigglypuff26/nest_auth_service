@@ -1,4 +1,33 @@
 #!/usr/bin/env sh
-# . "$(dirname -- "$0")/_/husky.sh"
+. "$(dirname -- "$0")/_/husky.sh"
 
+echo "🔍 Running Running Running..."
+
+# Фикс по .prettierrc
+echo "⚡🔧 Prettier Fix..."
+npm run format
+
+# # 1. Проверка форматирования и линтинга через lint-staged
+# echo "📝 Formatting and linting..."
 # npx lint-staged
+
+# # 2. Проверка типов TypeScript
+# echo "⚡ Type checking..."
+# npm run type-check -- --noEmit
+
+# # 3. Запуск тестов для измененных файлов
+# echo "🧪 Running tests..."
+# npm test -- --passWithNoTests --findRelatedTests --bail
+
+# # 4. Проверка сборки (опционально, если быстро)
+# echo "🏗️ Checking build..."
+# npm run build -- --noEmit
+
+# # 5. Проверка безопасности зависимостей (раз в день)
+# if [ ! -f .last_audit ] || [ "$(find .last_audit -mtime +0)" ]; then
+#   echo "🔒 Security audit..."
+#   npm audit --audit-level moderate
+#   date > .last_audit
+# fi
+
+echo "✅ Pre-commit checks passed!"

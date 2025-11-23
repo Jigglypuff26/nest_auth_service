@@ -1,0 +1,42 @@
+# NestJS специфичные файлы
+dist/
+node_modules/
+
+# Логи и временные файлы
+*.log
+logs/
+
+# Тестовые покрытия
+coverage/
+.nyc_output/
+
+# Environment файлы
+.env*
+!.env.example
+
+# Сборка и артефакты
+build/
+*.tsbuildinfo
+
+# Документация
+docs/
+*.md
+
+# Миграции (скомпилированные)
+src/migration/*.js
+migrations/*.js
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Package lock
+package-lock.json
+yarn.lock
