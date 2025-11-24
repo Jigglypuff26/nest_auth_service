@@ -1,0 +1,30 @@
+# Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Копируем package.json и package-lock.json
+COPY package*.json ./
+COPY tsconfig*.json ./
+
+# Устанавливаем зависимости
+RUN npm ci
+
+# Копируем исходный код
+COPY src/ ./src/
+COPY nest-cli.json ./
+
+# Собираем приложение
+RUN npm run build
+
+# Убираем dev зависимости
+RUN npm prune --production
+
+# Создаем пользователя для безопасности
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nestjs -u 1001
+USER nestjs
+
+EXPOSE 3000
+
+CMD ["node", "dist/main"]
