@@ -51,8 +51,4 @@ export class AuthService {
       },
     };
   }
-
-  async validateUser(payload: any) {
-    return await this.userService.findOneById(payload.sub);
-  }
 }

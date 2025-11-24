@@ -1,45 +1,45 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsString, IsOptional, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsString, IsOptional, MinLength, MaxLength, Matches } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
     description: 'Уникальный email адрес пользователя',
     example: 'user@example.com',
     format: 'email',
-    maxLength: 255,
     required: true,
     type: String,
+    maxLength: 64,
+    examples: ['admin@example.com', 'test.user@domain.com'],
   })
   @IsEmail()
   email: string;
 
   @ApiProperty({
-    description: 'Надежный пароль для учетной записи',
-    example: 'mySecurePassword',
+    description: 'Пароль учетной записи (минимум 8 символов, максимум 128 символов)',
+    example: 'mySecure$Password871!@',
     minLength: 8,
+    maxLength: 128,
     required: true,
     type: String,
     format: 'password',
+    writeOnly: true, // Скрывает пароль в ответах
     pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$',
-    examples: ['StrongPass1!', 'MyPassword123@', 'Secure2024!'],
+    examples: ['mySecure$Password871!@!'],
     externalDocs: {
       description: 'Learn more about strong passwords',
       url: 'https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#implement-proper-password-strength-controls',
     },
   })
-  @IsStrongPassword(
-    {
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1,
-    },
-    {
-      message:
-        'Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one symbol',
-    },
-  )
+  @IsString()
+  @MinLength(8, {
+    message: 'Слишком маленький пароль (Пароль должен быть минимум 8 символов)',
+  })
+  @MaxLength(128, {
+    message: 'Слишком большой пароль (Пароль должен быть максимум 128 символов)',
+  })
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'Не надежный пароль для учетной запис',
+  })
   password: string;
 
   @ApiPropertyOptional({
