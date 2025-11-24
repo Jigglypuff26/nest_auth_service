@@ -6,7 +6,6 @@
 
 - **JWT аутентификация** - безопасные access tokens
 - **PostgreSQL** - надежное хранение данных
-- **TypeORM** - работа с базой данных
 - **Валидация** - встроенная валидация DTO
 - **Безопасность** - хеширование паролей с bcrypt
 - **TypeScript** - полная типизация
@@ -130,48 +129,6 @@ Authorization: Bearer <your_jwt_token>
 DELETE /users/remove/1
 Authorization: Bearer <your_jwt_token>
 
-🛠 Технологии
-
-    NestJS - фреймворк для Node.js
-
-    PostgreSQL - реляционная база данных
-
-    TypeORM - ORM для TypeScript
-
-    JWT - JSON Web Tokens
-
-    bcryptjs - хеширование паролей
-
-    class-validator - валидация DTO
-
-    Passport - аутентификация
-
-📁 Структура проекта
-text
-
-src/
-├── app.module.ts          # Корневой модуль
-├── main.ts               # Точка входа
-├── auth/                 # Модуль аутентификации
-│   ├── auth.controller.ts
-│   ├── auth.service.ts
-│   ├── auth.module.ts
-│   ├── dto/
-│   │   └── signin.dto.ts
-│   ├── guards/
-│   │   └── jwt-auth.guard.ts
-│   └── strategies/
-│       └── jwt.strategy.ts
-└── user/                 # Модуль пользователей
-    ├── user.controller.ts
-    ├── user.service.ts
-    ├── user.entity.ts
-    ├── user.module.ts
-    └── dto/
-        ├── create-user.dto.ts
-        └── update-user.dto.ts
-
-🔧 Команды разработки
 
 # Запуск в режиме разработки
 ```
@@ -205,13 +162,3 @@ curl -X POST http://localhost:3000/auth/signin \
 # 3. Использование токена для доступа к защищенным endpoint'ам
 curl -X GET http://localhost:3000/auth/profile \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-🔒 Безопасность
-
-    Пароли хешируются с помощью bcrypt
-
-    JWT токены с сроком действия
-
-    Валидация всех входящих данных
-
-    Защита от SQL-инъекций через TypeORM
