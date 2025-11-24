@@ -5,7 +5,6 @@ import { AuthController } from './app.controller';
 import { AuthService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/users.module';
-import { TestController } from 'test/test.controller';
 
 @Module({
   imports: [
@@ -31,7 +30,7 @@ import { TestController } from 'test/test.controller';
     UserModule,
     AuthModule,
   ],
-  controllers: [AuthController, TestController],
+  controllers: [AuthController],
   providers: [AuthService],
 })
 export class AppModule {}

@@ -53,7 +53,9 @@ export class UserService {
 
   async findOneById(id: number): Promise<Omit<User, 'password'> | null> {
     const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) return null;
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     const { password, ...result } = user;
     return result;

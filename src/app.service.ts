@@ -33,15 +33,6 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  // Метод для Local стратегии
-  async validateUserForLocal(signInDto: SignInDto): Promise<any> {
-    const user = await this.userService.validateUser(signInDto.email, signInDto.password);
-    if (!user) {
-      return null;
-    }
-    return user;
-  }
-
   private generateToken(user: any) {
     const payload = {
       email: user.email,
