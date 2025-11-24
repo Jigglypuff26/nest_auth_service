@@ -1,13 +1,7 @@
-node_modules/
-dist/
-build/
-coverage/
+dist
+node_modules  
+coverage
 *.md
 *.json
-*.yaml
-*.yml
 .env
-.env.local
-.env.production
-Dockerfile
-docker-compose.yml
+.env.*
