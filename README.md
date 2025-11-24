@@ -1,12 +1,11 @@
 # NestJS Authentication Service 🔐
 
-Простой и эффективный сервис аутентификации на основе NestJS с PostgreSQL. Предоставляет REST API для регистрации, входа и управления пользователями с JWT токенами.
+Простой сервис аутентификации на основе NestJS с PostgreSQL. Предоставляет REST API для регистрации, входа и управления пользователями с JWT токенами.
 
 ## 🚀 Особенности
 
 - **JWT аутентификация** - безопасные access tokens
 - **PostgreSQL** - надежное хранение данных
-- **TypeORM** - работа с базой данных
 - **Валидация** - встроенная валидация DTO
 - **Безопасность** - хеширование паролей с bcrypt
 - **TypeScript** - полная типизация
@@ -21,28 +20,31 @@
 - npm или yarn
 
 ### 1. Клонирование репозитория
-
-```bash
+```
 git clone https://github.com/Jigglypuff26/nest_auth_service.git
 cd nest_auth_service
+```
 
 2. Установка зависимостей
-bash
 
+```
 npm install
+```
 
 3. Настройка базы данных
 
 Создайте базу данных в PostgreSQL:
-sql
 
+```
 CREATE DATABASE nest_auth;
+```
 
 4. Настройка переменных окружения
 
 Создайте файл .env в корне проекта:
 env
 
+```
 # Database
 DB_HOST=localhost
 DB_PORT=5432
@@ -57,154 +59,91 @@ JWT_EXPIRES_IN=1d
 # Application
 NODE_ENV=development
 PORT=3000
+```
 
 5. Запуск приложения
 
 Разработка:
-bash
 
+```
 npm run start:dev
+```
 
 Продакшен:
-bash
 
+```
 npm run build
 npm run start:prod
+```
 
 Приложение будет доступно по адресу: http://localhost:3000
 📚 API Endpoints
 Аутентификация
 Регистрация пользователя
-http
 
 POST /auth/signup
 Content-Type: application/json
-
+```
 {
   "email": "user@example.com",
   "password": "password123",
   "name": "John Doe"
 }
+```
 
 Вход пользователя
-http
 
 POST /auth/signin
 Content-Type: application/json
 
+```
 {
   "email": "user@example.com",
   "password": "password123"
 }
+```
 
 Получение профиля
-http
 
 GET /auth/profile
 Authorization: Bearer <your_jwt_token>
 
 Управление пользователями (требуют JWT)
 Получить всех пользователей
-http
 
-GET /users
+GET /users/allUsers
 Authorization: Bearer <your_jwt_token>
 
 Получить пользователя по ID
-http
 
-GET /users/1
+GET /users/getUser/1
 Authorization: Bearer <your_jwt_token>
 
-Создать пользователя
-http
+Изменить пользователя
 
-POST /users
+PATCH /users/update/1
 Authorization: Bearer <your_jwt_token>
-Content-Type: application/json
-
-{
-  "email": "newuser@example.com",
-  "password": "newpassword123",
-  "name": "New User"
-}
-
-Обновить пользователя
-http
-
-PATCH /users/1
-Authorization: Bearer <your_jwt_token>
-Content-Type: application/json
-
-{
-  "name": "Updated Name",
-  "isActive": false
-}
 
 Удалить пользователя
-http
 
-DELETE /users/1
+DELETE /users/remove/1
 Authorization: Bearer <your_jwt_token>
 
-🛠 Технологии
-
-    NestJS - фреймворк для Node.js
-
-    PostgreSQL - реляционная база данных
-
-    TypeORM - ORM для TypeScript
-
-    JWT - JSON Web Tokens
-
-    bcryptjs - хеширование паролей
-
-    class-validator - валидация DTO
-
-    Passport - аутентификация
-
-📁 Структура проекта
-text
-
-src/
-├── app.module.ts          # Корневой модуль
-├── main.ts               # Точка входа
-├── auth/                 # Модуль аутентификации
-│   ├── auth.controller.ts
-│   ├── auth.service.ts
-│   ├── auth.module.ts
-│   ├── dto/
-│   │   └── signin.dto.ts
-│   ├── guards/
-│   │   └── jwt-auth.guard.ts
-│   └── strategies/
-│       └── jwt.strategy.ts
-└── user/                 # Модуль пользователей
-    ├── user.controller.ts
-    ├── user.service.ts
-    ├── user.entity.ts
-    ├── user.module.ts
-    └── dto/
-        ├── create-user.dto.ts
-        └── update-user.dto.ts
-
-🔧 Команды разработки
-bash
 
 # Запуск в режиме разработки
+```
 npm run start:dev
+```
 
 # Сборка проекта
+```
 npm run build
-
-# Запуск тестов
-npm run test
-
-# Линтинг кода
-npm run lint
+```
 
 # Форматирование кода
+```
 npm run format
+```
 
 🧪 Примеры использования
 Регистрация и аутентификация
@@ -223,13 +162,3 @@ curl -X POST http://localhost:3000/auth/signin \
 # 3. Использование токена для доступа к защищенным endpoint'ам
 curl -X GET http://localhost:3000/auth/profile \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-🔒 Безопасность
-
-    Пароли хешируются с помощью bcrypt
-
-    JWT токены с сроком действия
-
-    Валидация всех входящих данных
-
-    Защита от SQL-инъекций через TypeORM

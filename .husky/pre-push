@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🚀 Running pre-push checks..."
+# echo "🚀 Running pre-push checks..."
 
 # # 1. Проверка типов TypeScript
 # echo "🔍 Type checking..."
@@ -19,4 +19,4 @@ echo "🚀 Running pre-push checks..."
 # echo "🏗️ Building project..."
 # npm run build
 
-echo "✅ All pre-push checks passed! Ready to push."
+# echo "✅ All pre-push checks passed! Ready to push."

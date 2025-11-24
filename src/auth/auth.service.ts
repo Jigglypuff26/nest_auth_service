@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from './dto/signin.dto';
 import { UserService } from 'src/users/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +34,7 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  private generateToken(user: any) {
+  private generateToken(user: Omit<User, 'password'>) {
     const payload = {
       email: user.email,
       sub: user.id,
