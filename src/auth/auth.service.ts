@@ -20,7 +20,7 @@ export class AuthService {
       if (error instanceof ConflictException) {
         throw error;
       }
-      throw new ConflictException('Failed to create user');
+      throw new ConflictException('Не удалось создать пользователя');
     }
   }
 
@@ -28,7 +28,7 @@ export class AuthService {
     const user = await this.userService.validateUser(signInDto.email, signInDto.password);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Нет пользователя с таким логином или неправильный пароль');
     }
 
     return this.generateToken(user);

@@ -7,11 +7,16 @@ import {
   Index,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { IsUUID } from 'class-validator';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @IsUUID()
+  @Column({ nullable: true })
+  userID: string;
 
   @Column({ unique: true })
   @Index()
