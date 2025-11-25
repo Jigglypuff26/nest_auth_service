@@ -36,9 +36,7 @@ export class AuthService {
 
   private generateToken(user: Omit<User, 'password'>) {
     const payload = {
-      email: user.email,
       sub: user.id,
-      name: user.name,
       userUuid: user.userUuid,
     };
 
