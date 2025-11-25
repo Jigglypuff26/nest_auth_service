@@ -20,7 +20,7 @@ export class UserService {
     private readonly uuidService: UuidService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -36,53 +36,67 @@ export class UserService {
       const user = this.userRepository.create({
         ...createUserDto,
         password: hashedPassword,
-        userID: uuId,
+        userUuid: uuId,
       });
 
       const savedUser = await this.userRepository.save(user);
-      const { password, ...result } = savedUser;
-      return result;
+      return savedUser;
     } catch (error) {
+      console.error(error);
       throw new InternalServerErrorException('Не удалось создать пользователя');
     }
   }
 
-  async findAll(): Promise<Omit<User, 'password'>[]> {
+  async findAll(): Promise<User[]> {
     const users = await this.userRepository.find();
     return users.map((user) => {
-      const { password, ...result } = user;
-      return result;
+      return user;
     });
   }
 
-  async findOneById(id: number): Promise<Omit<User, 'password'> | null> {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async findOneByUuid(userUuid: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({ where: { userUuid } });
     if (!user) {
       throw new NotFoundException('Пользователь не нейден');
     }
 
-    const { password, ...result } = user;
-    return result;
-  }
-
-  async findOneByUserId(userID: string): Promise<Omit<User, 'password'> | null> {
-    const user = await this.userRepository.findOne({ where: { userID } });
-    if (!user) {
-      throw new NotFoundException('Пользователь не нейден');
-    }
-
-    const { password, ...result } = user;
-    return result;
+    return user;
   }
 
   async findOneByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
+
+    if (!user) {
+      throw new NotFoundException('Пользователь не нейден');
+    }
+
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<Omit<User, 'password'>> {
+  async findOneById(id: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('Пользователь не нейден');
+    }
+
+    return user;
+  }
+
+  async findUserId(email: string): Promise<{ userId: string }> {
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Пользователь не нейден');
+    }
+
+    return { userId: user.id };
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
 
     if (!user) {
@@ -101,11 +115,10 @@ export class UserService {
       throw new NotFoundException('Пользователь не нейден');
     }
 
-    const { password, ...result } = updatedUser;
-    return result;
+    return updatedUser;
   }
 
-  async remove(id: number): Promise<void | object> {
+  async remove(id: string): Promise<void | object> {
     const result = await this.userRepository.delete(id);
 
     if (result.affected === 0) {
@@ -118,12 +131,11 @@ export class UserService {
     };
   }
 
-  async validateUser(email: string, password: string): Promise<Omit<User, 'password'> | null> {
+  async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.findOneByEmail(email);
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      return result;
+      return user;
     }
 
     return null;

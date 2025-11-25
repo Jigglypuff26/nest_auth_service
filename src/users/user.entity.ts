@@ -11,12 +11,13 @@ import { IsUUID } from 'class-validator';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  @Exclude()
+  id: string;
 
   @IsUUID()
-  @Column({ nullable: true })
-  userID: string;
+  @Column()
+  userUuid: string;
 
   @Column({ unique: true })
   @Index()

@@ -39,15 +39,16 @@ export class AuthService {
       email: user.email,
       sub: user.id,
       name: user.name,
+      userUuid: user.userUuid,
     };
 
     return {
       access_token: this.jwtService.sign(payload),
       user: {
-        id: user.id,
         email: user.email,
         name: user.name,
         isActive: user.isActive,
+        userUuid: user.userUuid,
       },
     };
   }
