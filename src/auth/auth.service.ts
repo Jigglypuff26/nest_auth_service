@@ -4,6 +4,7 @@ import { SignInDto } from './dto/signin.dto';
 import { UserService } from 'src/users/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from 'src/users/user.entity';
+import { ITokenBody } from 'src/shared/types/token.type';
 
 @Injectable()
 export class AuthService {
@@ -35,8 +36,8 @@ export class AuthService {
   }
 
   private generateToken(user: Omit<User, 'password'>) {
-    const payload = {
-      sub: user.id,
+    const payload: ITokenBody = {
+      id: user.id,
       userUuid: user.userUuid,
     };
 

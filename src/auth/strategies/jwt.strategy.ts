@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/users/users.service';
+import { ITokenBody } from 'src/shared/types/token.type';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,15 +14,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_SECRET', 'secretKey'),
+      secretOrKey: configService.get('JWT_SECRET', 'defaultSecretKey'),
     });
   }
 
-  async validate(payload: any) {
-    const user = await this.userService.findOneById(payload.sub);
+  async validate(payload: ITokenBody) {
+    const user = await this.userService.findOneById(payload.id);
 
-    if (!user || !user.isActive) {
-      throw new UnauthorizedException('Пользователь не найден или неактивен');
+    const validateUser = user?.id === payload.id && user?.userUuid === payload.userUuid;
+
+    if (!user && !validateUser) {
+      throw new UnauthorizedException('Пользователь не найден');
     }
 
     return user;
