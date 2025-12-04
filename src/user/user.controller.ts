@@ -15,16 +15,6 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get('getUserById/:id')
-  findUserById(@Param('id') id: string) {
-    return this.userService.findOneById(id);
-  }
-
-  @Get('getUserByUuid/:uuid')
-  findUserByUuid(@Param('uuid') uuid: string) {
-    return this.userService.findOneByUuid(uuid);
-  }
-
   @Get('getByEmail/:email')
   findUserByEmain(@Param('email') email: string) {
     return this.userService.findOneByEmail(email);
@@ -33,16 +23,5 @@ export class UserController {
   @Patch('update/:id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
-  }
-
-  // Admin
-  @Get('getUserId/:email')
-  findUserId(@Param('email') email: string) {
-    return this.userService.findUserId(email);
-  }
-
-  @Delete('remove/:id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
   }
 }

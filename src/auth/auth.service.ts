@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from './dto/signin.dto';
-import { UserService } from 'src/users/users.service';
+import { UserService } from 'src/user/users.service';
+import { User } from 'src/shared/entity/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from 'src/users/user.entity';
 import { ITokenBody } from 'src/shared/types/token.type';
 
 @Injectable()
@@ -39,6 +39,8 @@ export class AuthService {
     const payload: ITokenBody = {
       id: user.id,
       userUuid: user.userUuid,
+      email: user.email,
+      role: user.role,
     };
 
     return {

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsUUID } from 'class-validator';
+import { UserRole } from 'src/shared/constants/users.roles';
 
 @Entity('users')
 export class User {
@@ -22,6 +23,13 @@ export class User {
   @Column({ unique: true })
   @Index()
   email: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
 
   @Column()
   @Exclude()

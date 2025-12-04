@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../shared/entity/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { UpdateUserDto } from 'src/auth/dto/update-user.dto';
@@ -54,15 +54,6 @@ export class UserService {
     });
   }
 
-  async findOneByUuid(userUuid: string): Promise<User | null> {
-    const user = await this.userRepository.findOne({ where: { userUuid } });
-    if (!user) {
-      throw new NotFoundException('Пользователь не нейден');
-    }
-
-    return user;
-  }
-
   async findOneByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { email },
@@ -84,18 +75,6 @@ export class UserService {
     return user;
   }
 
-  async findUserId(email: string): Promise<{ userId: string }> {
-    const user = await this.userRepository.findOne({
-      where: { email },
-    });
-
-    if (!user) {
-      throw new NotFoundException('Пользователь не нейден');
-    }
-
-    return { userId: user.id };
-  }
-
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
 
@@ -109,26 +88,7 @@ export class UserService {
 
     await this.userRepository.update(id, updateUserDto);
 
-    const updatedUser = await this.userRepository.findOne({ where: { id } });
-
-    if (!updatedUser) {
-      throw new NotFoundException('Пользователь не нейден');
-    }
-
-    return updatedUser;
-  }
-
-  async remove(id: string): Promise<void | object> {
-    const result = await this.userRepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Пользователь не нейден');
-    }
-
-    return {
-      statusCode: 200,
-      message: 'Пользователь удалён',
-    };
+    return user;
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
